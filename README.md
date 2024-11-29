@@ -1,0 +1,64 @@
+classDiagram
+    class Restaurante {
+        +String nombre
+        +String direccion
+        +Menu menu
+        +List~Pedido~ listaPedidos
+        +registrarPedido(pedido: Pedido): void
+        +verPedidosActivos(): List~Pedido~
+         }
+
+  class Menu {
+        +List~Plato~ listaPlatos
+        +agregarPlato(plato: Plato): void
+        +eliminarPlato(plato: Plato): void
+        +buscarPlato(nombre: String): Plato
+    }
+
+  class Plato {
+        +String id
+        +String nombre
+        +String categoria
+        +Double precio
+        +String descripcion
+    }
+
+  class Pedido {
+        +String id
+        +Cliente cliente
+        +Mesero mesero
+        +List~Plato~ listaPlatos
+        +Double total
+        +calcularTotal(): Double
+        +confirmarPedido(): void
+    }
+
+  class Cliente {
+        +String id
+        +String nombre
+        +String contacto
+        +realizarPedido(): Pedido
+    }
+
+  class Empleado {
+        +String id
+        +String nombre
+        +String rol
+    }
+
+  class Mesero {
+        +asignarPedido(pedido: Pedido): void
+    }
+
+  class Cocinero {
+        +prepararPedido(pedido: Pedido): void
+    }
+
+  Empleado <|-- Mesero
+    Empleado <|-- Cocinero
+    Restaurante --> Menu : contiene
+    Restaurante --> "0..*" Pedido : gestiona
+    Menu --> "0..*" Plato : incluye
+    Pedido --> "1" Cliente : realizadoPor
+    Pedido --> "1" Mesero : atendidoPor
+    Pedido --> "0..*" Plato : contiene
