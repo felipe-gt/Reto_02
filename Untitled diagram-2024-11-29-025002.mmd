@@ -1,64 +1,46 @@
-classDiagram
-    class Restaurante {
-        +String nombre
-        +String direccion
-        +Menu menu
-        +List~Pedido~ listaPedidos
-        +registrarPedido(pedido: Pedido): void
-        +verPedidosActivos(): List~Pedido~
-    }
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subir y Ver Archivo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+        }
+        input, button {
+            margin: 10px;
+        }
+        iframe {
+            width: 80%;
+            height: 500px;
+            border: 1px solid #ccc;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
 
-    class Menu {
-        +List~Plato~ listaPlatos
-        +agregarPlato(plato: Plato): void
-        +eliminarPlato(plato: Plato): void
-        +buscarPlato(nombre: String): Plato
-    }
+    <h2>Sube un archivo PDF</h2>
+    <input type="file" id="fileInput" accept="application/pdf">
+    <button onclick="viewFile()">Ver Archivo</button>
+    <p id="message"></p>
+    <iframe id="pdfViewer"></iframe>
 
-    class Plato {
-        +String id
-        +String nombre
-        +String categoria
-        +Double precio
-        +String descripcion
-    }
+    <script>
+        function viewFile() {
+            let file = document.getElementById("fileInput").files[0];
+            if (file) {
+                let fileURL = URL.createObjectURL(file);
+                document.getElementById("pdfViewer").src = fileURL;
+                document.getElementById("message").innerText = "Archivo cargado correctamente.";
+            } else {
+                document.getElementById("message").innerText = "Por favor, selecciona un archivo.";
+            }
+        }
+    </script>
 
-    class Pedido {
-        +String id
-        +Cliente cliente
-        +Mesero mesero
-        +List~Plato~ listaPlatos
-        +Double total
-        +calcularTotal(): Double
-        +confirmarPedido(): void
-    }
-
-    class Cliente {
-        +String id
-        +String nombre
-        +String contacto
-        +realizarPedido(): Pedido
-    }
-
-    class Empleado {
-        +String id
-        +String nombre
-        +String rol
-    }
-
-    class Mesero {
-        +asignarPedido(pedido: Pedido): void
-    }
-
-    class Cocinero {
-        +prepararPedido(pedido: Pedido): void
-    }
-
-    Empleado <|-- Mesero
-    Empleado <|-- Cocinero
-    Restaurante --> Menu : contiene
-    Restaurante --> "0..*" Pedido : gestiona
-    Menu --> "0..*" Plato : incluye
-    Pedido --> "1" Cliente : realizadoPor
-    Pedido --> "1" Mesero : atendidoPor
-    Pedido --> "0..*" Plato : contiene
+</body>
+</html>
